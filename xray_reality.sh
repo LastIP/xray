@@ -12,6 +12,8 @@ BLUE='\033[0;34m'
 PURPLE='\033[0;35m'
 NC='\033[0m'
 
+PORT=8443
+
 echo -e "${BLUE}开始安装 VLESS-Reality 环境...${NC}"
 
 # 1. 检查并安装基础依赖 (非破坏性)
@@ -45,7 +47,7 @@ else
 fi
 
 # 2. 端口冲突检查
-PORT=8443
+# PORT=8443
 if command -v ss &> /dev/null; then
     if ss -tulnp | grep -q ":$PORT "; then
         echo -e "${RED}错误: 端口 $PORT 已被占用，请先停止相关服务或修改脚本中的 PORT 变量。${NC}"
