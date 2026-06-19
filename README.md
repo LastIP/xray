@@ -1,6 +1,6 @@
 ### 首先安裝服務端在配置客戶端！
 
-##### 服務端
+##### 服務器VPS
 ```
 ### 如果沒有安裝 Docker 先安裝，
 curl -fsSL https://get.docker.com | bash -s docker
@@ -9,7 +9,7 @@ curl -fsSL https://get.docker.com | bash -s docker
 curl -Ls https://raw.githubusercontent.com/LastIP/xray/main/xray_reality.sh | bash
 ```
 
-##### 客戶端
+##### 移動端客戶端
 蘋果客戶端
 https://apps.apple.com/us/app/v2box-v2ray-client/id6446814690
 
@@ -17,3 +17,11 @@ https://apps.apple.com/us/app/v2box-v2ray-client/id6446814690
 https://apkpure.com/cn/v2rayng/com.v2ray.ang
 
 手機上下載客戶端直接掃二維碼即可配置成功。
+
+
+##### 蘋果或PC客戶端
+蘋果
+https://github.com/clash-verge-rev/clash-verge-rev/releases/download/v2.5.1/Clash.Verge_2.5.1_aarch64.dmg
+
+PC
+https://github.com/clash-verge-rev/clash-verge-rev/releases/download/v2.5.1/Clash.Verge_2.5.1_x64-setup.exe
