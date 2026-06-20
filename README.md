@@ -20,8 +20,8 @@ https://apkpure.com/cn/v2rayng/com.v2ray.ang
 
 
 ##### 蘋果或PC客戶端
-蘋果<br>
+蘋果电脑<br>
 https://github.com/clash-verge-rev/clash-verge-rev/releases/download/v2.5.1/Clash.Verge_2.5.1_aarch64.dmg
 
-PC<br>
+PC桌面<br>
 https://github.com/clash-verge-rev/clash-verge-rev/releases/download/v2.5.1/Clash.Verge_2.5.1_x64-setup.exe
