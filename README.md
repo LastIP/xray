@@ -2,7 +2,7 @@
 
 ##### 服務器VPS
 ```
-### 開啟bbr加速
+### 開啟bbr加速 (選配)
 curl -Ls https://raw.githubusercontent.com/LastIP/xray/main/bbr.sh | bash
 
 ### 如果沒有安裝 Docker 先安裝，
