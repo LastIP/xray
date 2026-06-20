@@ -7,6 +7,9 @@ curl -fsSL https://get.docker.com | bash -s docker
 
 ### vless reality 部署安裝
 curl -Ls https://raw.githubusercontent.com/LastIP/xray/main/xray_reality.sh | bash
+
+### 刪除docker重新部署即可
+docker rm -f xray_reality
 ```
 
 ##### 移動端客戶端
