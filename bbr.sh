@@ -1,47 +1,48 @@
 #!/bin/bash
 
-# 檢查是否為 root 用戶
-if [[ $EUID -ne 0 ]]; then
-   echo "此腳本必須以 root 權限運行。"
-   exit 1
+# 檢查 root 權限
+[[ $EUID -ne 0 ]] && echo "請以 root 權限運行" && exit 1
+
+echo "檢測到內核版本: $(uname -r)"
+
+# 定義配置文件路徑
+# 優先使用 sysctl.d 目錄，如果不存在則使用 sysctl.conf
+if [ -d "/etc/sysctl.d" ]; then
+    CONF_FILE="/etc/sysctl.d/99-bbr.conf"
+else
+    CONF_FILE="/etc/sysctl.conf"
 fi
 
-# 1. 檢查 Linux 內核版本 (需 4.9 以上)
-kernel_version=$(uname -r | cut -d- -f1)
-main_version=$(echo $kernel_version | cut -d. -f1)
-minor_version=$(echo $kernel_version | cut -d. -f2)
+echo "正在將配置寫入: $CONF_FILE"
 
-if [ "$main_version" -lt 4 ] || ([ "$main_version" -eq 4 ] && [ "$minor_version" -lt 9 ]); then
-    echo "錯誤：當前內核版本為 $kernel_version，BBR 需要 4.9 或更高版本。"
-    echo "請先升級您的 Linux 內核。"
-    exit 1
+# 移除舊配置（如果文件存在）
+if [ -f "$CONF_FILE" ]; then
+    sed -i '/net.core.default_qdisc/d' "$CONF_FILE"
+    sed -i '/net.ipv4.tcp_congestion_control/d' "$CONF_FILE"
 fi
 
-echo "檢測到內核版本為 $kernel_version，符合 BBR 開啟條件。"
+# 寫入新配置
+# 使用 tee 以確保即便文件不存在也能創建
+echo "net.core.default_qdisc = fq" | tee -a "$CONF_FILE" > /dev/null
+echo "net.ipv4.tcp_congestion_control = bbr" | tee -a "$CONF_FILE" > /dev/null
 
-# 2. 清除舊的配置（避免重複）
-sed -i '/net.core.default_qdisc/d' /etc/sysctl.conf
-sed -i '/net.ipv4.tcp_congestion_control/d' /etc/sysctl.conf
+# 生效配置
+# 使用 --system 加載所有配置文件，兼容性最強
+sysctl --system > /dev/null 2>&1 || sysctl -p "$CONF_FILE" > /dev/null 2>&1
 
-# 3. 寫入新配置
-echo "net.core.default_qdisc = fq" >> /etc/sysctl.conf
-echo "net.ipv4.tcp_congestion_control = bbr" >> /etc/sysctl.conf
-
-# 4. 生效配置
-sysctl -p > /dev/null
-
-# 5. 驗證是否成功
+# 驗證
 echo "----------------------------------------"
 status=$(sysctl net.ipv4.tcp_congestion_control | awk '{print $3}')
 if [ "$status" == "bbr" ]; then
-    echo "BBR 成功開啟！"
+    echo "✅ BBR 成功開啟！"
 else
-    echo "BBR 開啟失敗，請檢查系統日誌。"
-    exit 1
-fi
-
-lsmod_check=$(lsmod | grep bbr)
-if [ -n "$lsmod_check" ]; then
-    echo "BBR 模組已載入。"
+    # 嘗試手動加載模塊（某些精簡系統需要）
+    modprobe tcp_bbr
+    status=$(sysctl net.ipv4.tcp_congestion_control | awk '{print $3}')
+    if [ "$status" == "bbr" ]; then
+        echo "✅ BBR 成功開啟（透過 modprobe）！"
+    else
+        echo "❌ BBR 開啟失敗，請檢查內核是否支持。"
+    fi
 fi
 echo "----------------------------------------"
