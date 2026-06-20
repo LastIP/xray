@@ -2,11 +2,11 @@
 
 ##### 服務器VPS
 ```
-### 如果沒有安裝 Docker 先安裝，
-curl -fsSL https://get.docker.com | bash -s docker
-
 ### 開啟bbr加速
 curl -Ls https://raw.githubusercontent.com/LastIP/xray/main/bbr.sh | bash
+
+### 如果沒有安裝 Docker 先安裝，
+curl -fsSL https://get.docker.com | bash -s docker
 
 ### vless reality 部署安裝
 curl -Ls https://raw.githubusercontent.com/LastIP/xray/main/xray_reality.sh | bash
