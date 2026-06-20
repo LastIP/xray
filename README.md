@@ -1,18 +1,21 @@
 ### 首先安裝服務端在配置客戶端！
+https://github.com/LastIP/xray
 
 ##### 服務器VPS
 ```
-### 開啟bbr加速 (選配)
-curl -Ls https://raw.githubusercontent.com/LastIP/xray/main/bbr.sh | bash
-
 ### 如果沒有安裝 Docker 先安裝，
 curl -fsSL https://get.docker.com | bash -s docker
 
-### vless reality 部署安裝
+### xray reality 服務端部署安裝
 curl -Ls https://raw.githubusercontent.com/LastIP/xray/main/xray_reality.sh | bash
 
-### 刪除docker重新部署即可
+
+###  (選配)
+# 刪除docker重新部署即可
 docker rm -f xray_reality
+
+# 開啟bbr加速
+curl -Ls https://raw.githubusercontent.com/LastIP/xray/main/bbr.sh | bash
 ```
 
 ##### 移動端客戶端
